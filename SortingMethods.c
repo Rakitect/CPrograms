@@ -8,9 +8,10 @@ enum SORTING_METHOD_TYPE
 {
     BUBBLE_SORTING = 0,
     MERGE_SORTING,
+    INSERTION_SORTING,
+    SELECTION_SORTING,
+    QUICK_SORTING,
     SORTING_METHOD_MAX,
-
-
 };
 
 // ===========================================================================
@@ -87,7 +88,6 @@ void Merging(int * dataArry, int leftIdx, int MidIndx, int rightIdx)
     }
 }
 
-
 void MergeSort(int * dataArry, int leftIdx, int rightIdx)
 {
     if(leftIdx < rightIdx)
@@ -100,6 +100,80 @@ void MergeSort(int * dataArry, int leftIdx, int rightIdx)
     }
 
 }
+
+// ===========================================================================
+// Insertion Sorting
+// ===========================================================================
+void InsertionSorting(int * dataArry, int dataMax)
+{
+    if(NULL == dataArry)
+        return;
+
+    int currentVal, l1, l2 ;
+    int isValueChanged = 0;
+    for(l1 = 1 ; l1 < dataMax-1; l1++)
+    {
+        currentVal = dataArry[l1];
+        isValueChanged = 0;
+        for(l2 = l1-1; l2 >= 0; l2--)
+        {
+            // If this l2 value is less than or equal to current value, it is a right place for it
+            if(dataArry[l2] <= currentVal)
+                break;
+            
+            // If this l2 is greater than current value, shift it to its next place
+            dataArry[l2+1] = dataArry[l2];
+            isValueChanged = 1;
+        }
+
+        // If value is changed at least one, need to place current value to the last position of l2
+        if(isValueChanged)
+        {
+             dataArry[l2+1] = currentVal;
+        }
+    }
+}
+
+// ===========================================================================
+// Selection Sorting
+// ===========================================================================
+void SelectionSorting(int * dataArry, int dataMax)
+{
+    if(NULL == dataArry)
+        return;
+
+    for(int i = 0 ; i < dataMax; i++)
+    {
+        // Find minimum value than this selected value
+        int selectedPos = i;
+
+        // Search start from the current position + 1
+        for( int j = i+1; j < dataMax; j++)
+        {
+            // If find value is less than, store that position
+            if(dataArry[selectedPos] > dataArry[j])
+            {
+                selectedPos = j;
+            }
+        }
+
+        // Swap the value if position is different than current position
+        if(i != selectedPos)
+        {
+            int temp = dataArry[i];
+            dataArry[i] = dataArry[selectedPos];
+            dataArry[selectedPos] = temp;
+        }
+    } 
+}
+
+
+
+// ===========================================================================
+// Quick Sorting
+// ===========================================================================
+
+
 
 void UseSortingMethod(int Method, int * dataArray, int dataMax)
 {
@@ -117,6 +191,17 @@ void UseSortingMethod(int Method, int * dataArray, int dataMax)
         case MERGE_SORTING:
             MergeSort(dataArray,0,dataMax-1);
             strcpy(methodName,"Merge Sorting");
+            break;
+        case INSERTION_SORTING:
+            InsertionSorting(dataArray,dataMax);
+            strcpy(methodName,"Insertion Sorting");
+            break;
+        case SELECTION_SORTING:
+            SelectionSorting(dataArray,dataMax);
+            strcpy(methodName,"Selection Sorting");
+            break;
+        case QUICK_SORTING:
+            strcpy(methodName,"Quick Sorting");
             break;
         default:
             return;
