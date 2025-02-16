@@ -19,7 +19,7 @@ enum SORTING_METHOD_TYPE
 void Swap(int * a, int * b)
 {
     int swap  = *a;
-    *a   = *b;
+    *a  = *b;
     *b = swap;     
 }
 
@@ -41,7 +41,7 @@ void BubbleSort(int * dataArry, int dataMax)
         {
             if (dataArry[idx2] > dataArry[idx2+1]) /* For decreasing order use < */
             {
-                Swap( dataArry[idx2],dataArry[idx2+1]);      
+                Swap( &dataArry[idx2],&dataArry[idx2+1]);      
             }
         }
     }
@@ -168,7 +168,7 @@ void SelectionSorting(int * dataArry, int dataMax)
         // Swap the value if position is different than current position
         if(i != selectedPos)
         {
-            Swap(dataArry[i],dataArry[selectedPos]);
+            Swap(&dataArry[i],&dataArry[selectedPos]);
         }
     } 
 }
@@ -181,7 +181,7 @@ void SelectionSorting(int * dataArry, int dataMax)
 int Parition(int * dataArray, int low, int high)
 {
     int pivot = dataArray[high];
-    int i = low;
+    int i = low-1;
     
     // i is used to set partition where 
     // all left side elements should be smaller than pivot number
@@ -190,23 +190,23 @@ int Parition(int * dataArray, int low, int high)
     {
         if(dataArray[j] <= pivot)
         {
-            Swap(dataArray[i],dataArray[j]);
             i++;
+            Swap(&dataArray[i],&dataArray[j]);
         }
     }
 
     // set pivot number at ith position and then return i value as a center of parition
-    Swap(dataArray[i],dataArray[high]);
-    return i;
+    Swap(&dataArray[i+1],&dataArray[high]);
+    return i+1;
 }
 
 void QuickSort(int * dataArray, int low, int high)
 {
     if(low < high)
     {
-        int p = Parition(dataArray, low, high)
+        int p = Parition(dataArray, low, high);
 
-        QuickSort(dataArray, low, p);
+        QuickSort(dataArray, low, p-1);
         QuickSort(dataArray, p+1, high);
     }
 }
