@@ -13,6 +13,16 @@ enum SORTING_METHOD_TYPE
     QUICK_SORTING,
     SORTING_METHOD_MAX,
 };
+// ===========================================================================
+// Common Utilites
+// ===========================================================================
+void Swap(int * a, int * b)
+{
+    int swap  = *a;
+    *a   = *b;
+    *b = swap;     
+}
+
 
 // ===========================================================================
 // Bubble Sorting
@@ -31,9 +41,7 @@ void BubbleSort(int * dataArry, int dataMax)
         {
             if (dataArry[idx2] > dataArry[idx2+1]) /* For decreasing order use < */
             {
-                swap  = dataArry[idx2];
-                dataArry[idx2]   = dataArry[idx2+1];
-                dataArry[idx2+1] = swap;       
+                Swap( dataArry[idx2],dataArry[idx2+1]);      
             }
         }
     }
@@ -160,9 +168,7 @@ void SelectionSorting(int * dataArry, int dataMax)
         // Swap the value if position is different than current position
         if(i != selectedPos)
         {
-            int temp = dataArry[i];
-            dataArry[i] = dataArry[selectedPos];
-            dataArry[selectedPos] = temp;
+            Swap(dataArry[i],dataArry[selectedPos]);
         }
     } 
 }
@@ -172,7 +178,38 @@ void SelectionSorting(int * dataArry, int dataMax)
 // ===========================================================================
 // Quick Sorting
 // ===========================================================================
+int Parition(int * dataArray, int low, int high)
+{
+    int pivot = dataArray[high];
+    int i = low;
+    
+    // i is used to set partition where 
+    // all left side elements should be smaller than pivot number
+    // all right side elements should be greater than pivot number
+    for(int j = low; j < high; j++)
+    {
+        if(dataArray[j] <= pivot)
+        {
+            Swap(dataArray[i],dataArray[j]);
+            i++;
+        }
+    }
 
+    // set pivot number at ith position and then return i value as a center of parition
+    Swap(dataArray[i],dataArray[high]);
+    return i;
+}
+
+void QuickSort(int * dataArray, int low, int high)
+{
+    if(low < high)
+    {
+        int p = Parition(dataArray, low, high)
+
+        QuickSort(dataArray, low, p);
+        QuickSort(dataArray, p+1, high);
+    }
+}
 
 
 void UseSortingMethod(int Method, int * dataArray, int dataMax)
@@ -201,6 +238,7 @@ void UseSortingMethod(int Method, int * dataArray, int dataMax)
             strcpy(methodName,"Selection Sorting");
             break;
         case QUICK_SORTING:
+            QuickSort(dataArray,0,dataMax-1);
             strcpy(methodName,"Quick Sorting");
             break;
         default:
